@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.magicmap.dao.EpidemicMapper">
+  <resultMap id="BaseResultMap" type="com.example.magicmap.entity.Epidemic">
+    <!--@mbg.generated-->
+    <!--@Table epidemic-->
+    <id column="epidemic_id" jdbcType="BIGINT" property="epidemicId" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="current_confirmed_count" jdbcType="INTEGER" property="currentConfirmedCount" />
+    <result column="confirmed_count" jdbcType="INTEGER" property="confirmedCount" />
+    <result column="suspected_count" jdbcType="INTEGER" property="suspectedCount" />
+    <result column="cured_count" jdbcType="INTEGER" property="curedCount" />
+    <result column="dead_count" jdbcType="INTEGER" property="deadCount" />
+    <result column="high_danger_count" jdbcType="INTEGER" property="highDangerCount" />
+    <result column="mid_danger_count" jdbcType="INTEGER" property="midDangerCount" />
+    <result column="location_id" jdbcType="INTEGER" property="locationId" />
+    <result column="not_show_current_confirmed_count" jdbcType="TINYINT" property="notShowCurrentConfirmedCount" />
+    <result column="current_confirmed_count_str" jdbcType="VARCHAR" property="currentConfirmedCountStr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    epidemic_id, city_name, current_confirmed_count, confirmed_count, suspected_count, 
+    cured_count, dead_count, high_danger_count, mid_danger_count, location_id, not_show_current_confirmed_count, 
+    current_confirmed_count_str
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from epidemic
+    where epidemic_id = #{epidemicId,jdbcType=BIGINT}
+  </select>
+  <insert id="batchInsert" keyColumn="epidemic_id" keyProperty="epidemicId" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into epidemic
+    (city_name, current_confirmed_count, confirmed_count, suspected_count, cured_count, 
+      dead_count, high_danger_count, mid_danger_count, location_id, not_show_current_confirmed_count, 
+      current_confirmed_count_str)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.cityName,jdbcType=VARCHAR}, #{item.currentConfirmedCount,jdbcType=INTEGER}, 
+        #{item.confirmedCount,jdbcType=INTEGER}, #{item.suspectedCount,jdbcType=INTEGER}, 
+        #{item.curedCount,jdbcType=INTEGER}, #{item.deadCount,jdbcType=INTEGER}, #{item.highDangerCount,jdbcType=INTEGER}, 
+        #{item.midDangerCount,jdbcType=INTEGER}, #{item.locationId,jdbcType=INTEGER}, #{item.notShowCurrentConfirmedCount,jdbcType=TINYINT}, 
+        #{item.currentConfirmedCountStr,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+</mapper>

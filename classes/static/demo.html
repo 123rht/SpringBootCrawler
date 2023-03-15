@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>河南省地图</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.4.1/echarts.js"></script>
+</head>
+<body>
+<div id="map" style="width: 600px;height:400px;margin: 0 auto"></div>
+
+<button id="current">获取当前确诊人数</button>
+    <button id="current-count">获取累计当前确诊人数</button>
+        <button id="curred">获取治愈人数</button>
+
+            <script type="text/javascript">
+                $.getJSON("./HN.json", function (geoJSON) {
+                    echarts.registerMap("HN",geoJSON);
+                    var myMap = echarts.init(document.getElementById('map'));
+                    $("#current").click(function () {
+                        $.get("http://localhost:8088/epidemic/current",function (data) {
+                            var mapOption = {
+                                visualMap:[{
+                                    min: 0,
+                                    max: 100,
+                                    calculable: true,
+                                    realtime: false,
+                                    inRange:{
+                                        color:["#C32C6", "#4575b4", "#74add1", "#6b19d9", "#e0f3f8", "#ffffbf", "#fee090", "#fdae61", "#f46d43", "#d73027", "#a50026"]
+                                    }
+                                }],
+                                series: [{
+                                    type: 'map',
+                                    map: 'HN',
+                                    label: {
+                                        show: true
+                                    },
+                                    data:data,
+                                }]
+                            };
+                            myMap.setOption(mapOption);
+                        })
+                    });
+                    $("#current-count").click(function () {
+                        $.get("http://localhost:8088/epidemic/confirmed",function (data) {
+                            var Option = {
+                                visualMap:[{
+                                    min: 0,
+                                    max: 100,
+                                    calculable: true,
+                                    realtime: false,
+                                    inRange:{
+                                        color:["#C32C6", "#4575b4", "#74add1", "#6b19d9", "#e0f3f8", "#ffffbf", "#fee090", "#fdae61", "#f46d43", "#d73027", "#a50026"]
+                                    }
+                                }],
+                                series: [{
+                                    type: 'map',
+                                    map: 'HN',
+                                    label: {
+                                        show: true
+                                    },
+                                    data:data
+                                }]
+                            };
+                            myMap.setOption(Option);
+                        })
+
+                    });
+                    $("#curred").click(function () {
+                        $.get("http://localhost:8088/epidemic/curred",function (data) {
+                            var Option = {
+                                visualMap:[{
+                                    min: 0,
+                                    max: 100,
+                                    calculable: true,
+                                    realtime: false,
+                                    inRange:{
+                                        color:["#51F0E8", "#55FAC3", "#59E38E", "#55FA66", "#75F051"]
+                                    }
+                                }],
+                                series: [{
+                                    type: 'map',
+                                    map: 'HN',
+                                    label: {
+                                        show: true
+                                    },
+                                    data:data
+                                }]
+                            };
+                            myMap.setOption(Option);
+                        })
+
+                    });
+                })
+            </script>
+</body>
+</html>
